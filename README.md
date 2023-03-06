@@ -1,8 +1,9 @@
 # Despliegue del Proyecto
 **Actualiza las dependencias del proyecto (es necesario tener Composer)**
 
-```composer update```
-
+```bash
+composer update
+```
 
 **Configura la conexion (trabajamos con MySql), agrega:**
 
