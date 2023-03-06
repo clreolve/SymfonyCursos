@@ -48,7 +48,12 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-link" href="{{path('user_lista')}}">Usuarios</a>
+            <a class="nav-link" href="{{ path('user_lista') }}">Usuarios</a>
+
+            {% if app.user %}
+			<div class="nav-link">{{ app.user.userIdentifier }}</div> 
+            <a class="nav-link btn btn-danger navbar-right" href="{{ path('app_logout') }}">Logout</a>
+            {% endif %}
           </div>
         </div>
       </div>
