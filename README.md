@@ -6,7 +6,7 @@
 
 **Configura la conexion (trabajamos con MySql), agrega:**
 
-* Contraseña del usuasio
+* Contraseña del usuario
 * Nombre del usuario
 * Nombre de la base de datos
 
