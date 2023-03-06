@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %} {% block title %}Administracion de Usuarios {%
+endblock %} {% block body %}
+
+<div class="container">
+	<h1>Usuarios Activos</h1>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Email</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellido</th>
+        <th scope="col">Tipo</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+      <tr>
+        <th scope="row">{{ user.id }}</th>
+        <td>{{ user.email }}</td>
+        <td>{{ user.nombre | capitalize }}</td>
+        <td>{{ user.apellido | capitalize }}</td>
+        <td>{{ user.tipo | capitalize }}</td>
+        <td>
+			<a
+            class="btn btn-danger"
+            role="button"
+            href="{{ path('user_banear', { id: user.id }) }}"
+            >Banear</a>
+          
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  	<h2>Usuarios Baneados</h2>
+	<table class="table table-danger table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Email</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellido</th>
+        <th scope="col">Tipo</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in baneados %}
+      <tr>
+        <th scope="row">{{ user.id }}</th>
+        <td>{{ user.email }}</td>
+        <td>{{ user.nombre | capitalize }}</td>
+        <td>{{ user.apellido | capitalize }}</td>
+        <td>{{ user.tipo | capitalize }}</td>
+        <td>
+			
+          
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

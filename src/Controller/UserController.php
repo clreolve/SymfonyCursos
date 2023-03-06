@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\UserType;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Id;
 use PhpParser\Node\Stmt\TryCatch;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route('/user')]
 class UserController extends AbstractController
 {
 
@@ -30,7 +32,7 @@ class UserController extends AbstractController
             //si el formulario es enviado y es valido
             $user->setActivo(true);
             $user->setRoles(['ROLE_USER']);
-
+            
             $user->setPassword(
                 $encoder->hashPassword(
                     $user,
@@ -52,5 +54,39 @@ class UserController extends AbstractController
         return $this->render('user/index.html.twig', [
             'formulario' => $form->createView()
         ]);
+    }
+
+    #[Route('/lista', name: 'user_lista')]
+    public function listar(
+        Request $request,
+        EntityManagerInterface $em,
+        UserPasswordHasherInterface $encoder
+    ): Response {
+        $users = $em->getRepository(User::class)->findBy(['activo' => true]);
+        $baneados = $em->getRepository(User::class)->findBy(['activo' => false]);
+        return $this->render('user/lista.html.twig', [
+            'users' => $users, 'baneados'=>$baneados
+        ]);
+    }
+
+    #[Route('/banear/{id}', name: 'user_banear')]
+    public function banear(
+        $id,
+        Request $request,
+        EntityManagerInterface $em,
+        UserPasswordHasherInterface $encoder
+    ): Response {
+        $user = $em->getRepository(User::class)->find(id:$id);
+        $user->setActivo(False);
+
+        if (!$user) {
+            throw $this->createNotFoundException(
+                'No User found for id ' . $id
+            );
+        }
+
+        $user->setActivo(false);
+        $em->flush();
+        return $this->redirectToRoute('user_lista');
     }
 }
